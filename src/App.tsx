@@ -1,10 +1,11 @@
-import { Col, Row, Table } from 'antd';
+import { Col, Input, Row, Table } from 'antd';
 import { User, UserService } from 'goodvandro-alganews-sdk';
 import { useEffect, useState } from 'react';
 import './index.css';
 
 function App() {
   const [users, setUsers] = useState<User.Summary[]>([]);
+  const [name, setName] = useState('')
 
   useEffect(() => {
     UserService.getAllUsers().then(setUsers);
@@ -12,7 +13,19 @@ function App() {
 
   return (
     <div>
-      <Row gutter={8} justify={'center'}>
+      <Row gutter={8}>
+        <Col span={4}>{name}</Col>
+        <Col span={4}>
+          <Input
+            placeholder={'E.g.: Evandro Lima'}
+            size={'large'}
+            suffix={'Pai do React'}
+            prefix={'Eu'}
+            onChange={(e) => {
+              setName(e.target.value);
+            }}
+          />
+        </Col>
         <Col span={24}>
           <Table
             dataSource={users}
