@@ -1,47 +1,56 @@
-import { Col, Input, Row, Table } from 'antd';
-import { User, UserService } from 'goodvandro-alganews-sdk';
-import { useEffect, useState } from 'react';
+import { Col, Row, Form, Input, Button } from 'antd';
 import './index.css';
 
 function App() {
-  const [users, setUsers] = useState<User.Summary[]>([]);
-  const [name, setName] = useState('')
-
-  useEffect(() => {
-    UserService.getAllUsers().then(setUsers);
-  }, []);
-
   return (
     <div>
-      <Row gutter={8}>
-        <Col span={4}>{name}</Col>
-        <Col span={4}>
-          <Input
-            placeholder={'E.g.: Evandro Lima'}
-            size={'large'}
-            suffix={'Pai do React'}
-            prefix={'Eu'}
-            onChange={(e) => {
-              setName(e.target.value);
-            }}
-          />
-        </Col>
-        <Col span={24}>
-          <Table
-            dataSource={users}
-            columns={[
-              {
-                title: 'Name',
-                dataIndex: 'name',
-              },
-              {
-                title: 'E-mail',
-                dataIndex: 'email',
-              },
-            ]}
-          />
-        </Col>
-      </Row>
+      <Form
+        onFinish={(form) => {
+          console.log(form);
+        }}
+        layout={'vertical'}
+        autoComplete={'off'}
+      >
+        <Row gutter={16}>
+          <Col span={8}>
+            <Form.Item
+              label={'Primeiro nome'}
+              name={'firstName'}
+            >
+              <Input placeholder={'Ex.: João'} />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item
+              label={'Último nome'}
+              name={['lastName']}
+            >
+              <Input placeholder={'Ex.: Batista'} />
+            </Form.Item>
+          </Col>
+          <Col span={16}>
+            <Form.Item
+              label={'Email'}
+              name={'email'}
+              rules={[
+                {
+                  required: true,
+                  message: 'Campo obrigatório',
+                },
+              ]}
+            >
+              <Input
+                placeholder={'Ex.: contato@joao.batista'}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={24}>
+            <Button type={'primary'} htmlType={'submit'}>
+              Enviar dados
+            </Button>
+          </Col>
+        </Row>
+      </Form>
     </div>
   );
 }
